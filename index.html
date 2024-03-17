@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Game Genius</title>
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1 class="center">Game Genius: encontre seu jogo!</h1>
+    <h4>Defina o que está buscando e encontre algo para jogar:</h4>
+    <form name="form1">
+      <label>Quantidade de players:</label>
+      <input type="radio" name="nbr_players" value="1player" required /> Um
+      jogador
+      <input type="radio" name="nbr_players" value="2player" required /> Dois
+      jogadores
+      <input type="radio" name="nbr_players" value="4players" required /> Quatro
+      jogadores
+      <input type="radio" name="nbr_players" value="mmo" required /> MMO
+      <br />
+      <br />
+      <label>Tipo de jogo (se multiplayer):</label>
+      <select name="tipo">
+        <option value="">Selecione</option>
+        <option value="coop" required>Cooperativo</option>
+        <option value="pvp" required>Jogador vs. Jogador</option>
+      </select>
+      <br />
+      <br />
+      <label>Gênero:</label>
+      <select name="genero">
+        <option value="qualquer">Qualquer gênero</option>
+        <option value="acao" required>Ação</option>
+        <option value="aventura" required>Aventura</option>
+        <option value="rpg" required>RPG</option>
+        <option value="simulacao" required>Simulação</option>
+        <option value="estrategia" required>Estratégia</option>
+        <option value="corrida" required>Corrida</option>
+        <option value="esportes" required>Esportes</option>
+      </select>
+      <br />
+      <br />
+      <label>Plataforma:</label>
+      <select name="plaftorma">
+        <option value="aleatoria">Aleatória</option>
+        <option value="multiplataforma" required>Multiplataforma</option>
+        <option value="pc" required>PC</option>
+        <option value="playstation4" required>Playstation 4</option>
+        <option value="playstation5" required>Playstation 5</option>
+        <option value="xboxone" required>Xbox One</option>
+        <option value="xboxseries" required>Xbox Series</option>
+        <option value="switch" required>Nintendo Switch</option>
+      </select>
+      <br />
+      <br />
+      <input type="checkbox" name="terms" required /> Termos e Condições
+      <br />
+      <br />
+      <button type="submit">Enviar</button>
+    </form>
+  </body>
+</html>

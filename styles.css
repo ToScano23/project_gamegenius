@@ -1,0 +1,35 @@
+h1 {
+    text-decoration: underline;
+  }
+  body {
+    margin: 50px;
+    background: hsl(0, 0%, 14%);
+    color: #ffffff;
+  }
+  p.right {
+    text-align: right;
+  }
+  p.center {
+    text-align: center;
+  }
+  p.left {
+    text-align: left;
+  }
+  h1.center {
+    text-align: center;
+    border-style: groove;
+    border-color: #ffffff;
+    border-width: 5px;
+    padding: 5px;
+    margin: 1px;
+  }
+  label.center {
+    text-align: center;
+  }
+  label.left {
+    text-align: left;
+  }
+  label.right {
+    text-align: right;
+  }
+  
