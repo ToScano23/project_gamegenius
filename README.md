@@ -4,6 +4,6 @@ Integrantes do grupo: </br>
 23.85167-8 - Felipe Toscano Messias </br>
 21.84724-9 - Pedro Henrique Curiel dos Santos </br>
 
-Anotações de entrega:
-17/03 - entrega01(front): Entrega do desenho simples do FrontEnd com as opções de estilos de jogos (lista parcial), ainda sem a aplicação em React devido a progressão na disciplina
-24/03 - entrega02(front): Entrega do front end com adição do subgenero dos jogos - pendente customização detalhada na página - pendente estudo na parte de design de página como inclusão de banners, fundo, etc.
+Anotações de entrega:</br>
+17/03 - entrega01(front): Entrega do desenho simples do FrontEnd com as opções de estilos de jogos (lista parcial), ainda sem a aplicação em React devido a progressão na disciplina </br>
+24/03 - entrega02(front): Entrega do front end com adição do subgenero dos jogos - pendente customização detalhada na página - pendente estudo na parte de design de página como inclusão de banners, fundo, etc.</br>
