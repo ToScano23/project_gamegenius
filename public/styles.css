@@ -17,9 +17,6 @@ h1 {
   }
   h1.center {
     text-align: center;
-    border-style: groove;
-    border-color: #ffffff;
-    border-width: 5px;
     padding: 5px;
     margin: 1px;
   }

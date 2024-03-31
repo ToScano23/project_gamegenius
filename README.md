@@ -7,3 +7,4 @@ Integrantes do grupo: </br>
 Anotações de entrega:</br>
 17/03 - entrega01(front): Entrega do desenho simples do FrontEnd com as opções de estilos de jogos (lista parcial), ainda sem a aplicação em React devido a progressão na disciplina </br>
 24/03 - entrega02(front): Entrega do front end com adição do subgenero dos jogos - pendente customização detalhada na página - pendente estudo na parte de design de página como inclusão de banners, fundo, etc.</br>
+31/03 - entrega03(back): cria a aplicação NodeJS com a ferramenta CRA.</br>
