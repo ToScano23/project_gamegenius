@@ -1,9 +1,12 @@
 .footer{ 
-    position:absolute;
+    position: fixed;
     bottom: 0;
     width:100%;
     height: 50px;
     background-color: rgb(43, 43, 43);
-    text-align: center;
     color: white;
     }
+.span{
+    text-align: center;
+    color: white;
+}
