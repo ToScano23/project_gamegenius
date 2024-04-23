@@ -4,8 +4,8 @@ import "./styles.css";
 const Form = () => {
     return (
         <div>
-            <form name="form1" className="form">
-                <label className="label">Quantidade de players:  </label>
+            <form name="form1" className="form" data-testid="form">
+                <label className="label" data-testid="quantityLabel">Quantidade de players:  </label>
                 <select name="nbr_players">
                     <option value="1player" required> Um jogador </option>
                     <option value="2player" required> Dois jogadores </option>
@@ -14,7 +14,7 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <label className="label">Tipo de jogo (se multiplayer):  </label>
+                <label className="label" data-testid="gameTypeLabel">Tipo de jogo (se multiplayer):  </label>
                 <select name="tipo">
                     <option value="">Selecione</option>
                     <option value="coop" required>Cooperativo</option>
@@ -22,7 +22,7 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <label className="label">Gênero:  </label>
+                <label className="label" data-testid="genreLabel">Gênero:  </label>
                 <select name="genero">
                     <option value="qualquer">Qualquer gênero</option>
                     <option value="acao" required>Ação</option>
@@ -35,7 +35,7 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <label className="label">Sub-gênero:  </label>
+                <label className="label" data-testid="subgenreLabel">Sub-gênero:  </label>
                 <select name="subgenero">
                     <option value="qualquer">Qualquer subgênero</option>
                     <option value="arcade-ritmo" required>Arcade e Ritmo</option>
@@ -47,7 +47,7 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <label className="label">Plataforma:  </label>
+                <label className="label" data-testid="platformLabel">Plataforma:  </label>
                 <select name="plaftorma">
                     <option value="aleatoria">Aleatória</option>
                     <option value="multiplataforma" required>Multiplataforma</option>
@@ -60,10 +60,10 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <input type="checkbox" name="terms" required /> Termos e Condições
+                <input type="checkbox" name="terms" required data-testid="termscheckbox"/> Termos e Condições
                 <br />
                 <br />
-                <button type="submit">Enviar</button>
+                <button type="submit" data-testid="submitbutton">Enviar</button>
             </form>
         </div>
     )
