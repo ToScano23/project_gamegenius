@@ -33,21 +33,25 @@ describe('Form Component', () => {
     const submitButton = screen.getByTestId("submitbutton");
     expect(submitButton).toBeInTheDocument();
   });
- /*
+ 
   test('form submission', () => {
     render(<Form />);
    
     // Simula o preenchimento do formulário
-    fireEvent.change(screen.getByLabelText(/Quantidade de players/i), { target: { value: '2player' } });
-    fireEvent.change(screen.getByLabelText(/Tipo de jogo/i), { target: { value: 'pvp' } });
-    fireEvent.change(screen.getByLabelText(/Gênero/i), { target: { value: 'acao' } });
-    fireEvent.change(screen.getByLabelText(/Sub-gênero/i), { target: { value: 'arcade-ritmo' } });
-    fireEvent.change(screen.getByLabelText(/Plataforma/i), { target: { value: 'pc' } });
-    fireEvent.click(screen.getByRole('checkbox', { name: /termos e condições/i }));
-    fireEvent.click(screen.getByRole('button', { name: /enviar/i }));
+    fireEvent.change(screen.getByTestId("select_player"), { target: { value: '2player' } });
+    fireEvent.change(screen.getByTestId("tipo_jogo"), { target: { value: 'pvp' } });
+    fireEvent.change(screen.getByTestId("genre"), { target: { value: 'acao' } });
+    fireEvent.change(screen.getByTestId("sub_genre"), { target: { value: 'arcade-ritmo' } });
+    fireEvent.change(screen.getByTestId("plataforma"), { target: { value: 'pc' } });
+    fireEvent.click(screen.getByTestId("termscheckbox", { name: /termos e condições/i }));
+    // fireEvent.click(screen.getByTestId("submitbutton", { name: "enviar" }));
+    // Encontre o botão pelo ID
+    const botaoSubmit = screen.getByTestId("submitbutton", { name: "enviar" });
+    // Simula o click no botao
+    fireEvent.click(botaoSubmit);
  
     // Verifica se o evento de envio foi chamado
-    expect(screen.getByRole('form', { name: /form1/i })).toHaveFormValues({
+    expect(screen.getByTestId('form', { name: /form1/i })).toHaveFormValues({
       nbr_players: '2player',
       tipo: 'pvp',
       genero: 'acao',
@@ -55,5 +59,5 @@ describe('Form Component', () => {
       plaftorma: 'pc',
       terms: true,
     });
-  });*/
+  });
 });

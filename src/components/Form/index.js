@@ -6,7 +6,7 @@ const Form = () => {
         <div>
             <form name="form1" className="form" data-testid="form">
                 <label className="label" data-testid="quantityLabel">Quantidade de players:  </label>
-                <select name="nbr_players">
+                <select name="nbr_players" data-testid = "select_player">
                     <option value="1player" required> Um jogador </option>
                     <option value="2player" required> Dois jogadores </option>
                     <option value="4player" required> Quatro jogadores </option>
@@ -15,7 +15,7 @@ const Form = () => {
                 <br />
                 <br />
                 <label className="label" data-testid="gameTypeLabel">Tipo de jogo (se multiplayer):  </label>
-                <select name="tipo">
+                <select name="tipo" data-testid = "tipo_jogo">
                     <option value="">Selecione</option>
                     <option value="coop" required>Cooperativo</option>
                     <option value="pvp" required>Jogador vs. Jogador</option>
@@ -23,7 +23,7 @@ const Form = () => {
                 <br />
                 <br />
                 <label className="label" data-testid="genreLabel">Gênero:  </label>
-                <select name="genero">
+                <select name="genero" data-testid = "genre">
                     <option value="qualquer">Qualquer gênero</option>
                     <option value="acao" required>Ação</option>
                     <option value="aventura" required>Aventura</option>
@@ -36,7 +36,7 @@ const Form = () => {
                 <br />
                 <br />
                 <label className="label" data-testid="subgenreLabel">Sub-gênero:  </label>
-                <select name="subgenero">
+                <select name="subgenero" data-testid = "sub_genre">
                     <option value="qualquer">Qualquer subgênero</option>
                     <option value="arcade-ritmo" required>Arcade e Ritmo</option>
                     <option value="hackslash" required>Hack and Slash</option>
@@ -48,7 +48,7 @@ const Form = () => {
                 <br />
                 <br />
                 <label className="label" data-testid="platformLabel">Plataforma:  </label>
-                <select name="plaftorma">
+                <select name="plaftorma" data-testid = "plataforma">
                     <option value="aleatoria">Aleatória</option>
                     <option value="multiplataforma" required>Multiplataforma</option>
                     <option value="pc" required>PC</option>
@@ -63,7 +63,7 @@ const Form = () => {
                 <input type="checkbox" name="terms" required data-testid="termscheckbox"/> Termos e Condições
                 <br />
                 <br />
-                <button type="submit" data-testid="submitbutton">Enviar</button>
+                <button type="submit" data-testid="submitbutton" name="enviar" >Enviar</button>
             </form>
         </div>
     )
