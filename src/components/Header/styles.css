@@ -1,0 +1,12 @@
+.header {
+    position: sticky;
+    height: 195px;
+    top: 0;
+    background: rgb(28,28,63) ;
+    width: 100%
+}
+.banner {
+    position: static;
+    height: 192px;
+    position: sticky;
+}

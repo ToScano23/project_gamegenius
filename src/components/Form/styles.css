@@ -1,0 +1,36 @@
+h1 {
+    text-decoration: underline;
+}
+
+body {
+    margin: 0px;
+    background: hsl(0, 0%, 14%);
+    color: #ffffff;
+}
+
+p.right {
+    text-align: right;
+}
+
+p.center {
+    text-align: center;
+}
+
+p.left {
+    text-align: left;
+}
+
+h1.center {
+    text-align: center;
+    padding: 5px;
+    margin: 1px;
+}
+
+.form.label {
+    text-align: left;
+}
+
+.form {
+    text-align: center;
+    display: inline-block;
+}
