@@ -5,10 +5,12 @@ DROP SCHEMA gamegenius;
 CREATE SCHEMA IF NOT EXISTS gamegenius;
 
 CREATE TABLE IF NOT EXISTS gamegenius.response(
-    resp_id SERIAL PRIMARY KEY,
-    nome_jogo VARCHAR(255) NOT NULL,
-    avaliacao_jogo VARCHAR(10) NOT NULL,
-    n_joagadores VARCHAR(10) NOT NULL,
+    jogo_id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    avaliacao VARCHAR(10) NOT NULL,
+    genero VARCHAR(100) NOT NULL,
+    plataforma VARCHAR(255) NOT NULL,
+    n_jogadores VARCHAR(10) NOT NULL,
     descricao VARCHAR(255) NOT NULL
 );
 
@@ -18,5 +20,5 @@ CREATE TABLE IF NOT EXISTS gamegenius.logs(
     tipo_multiplayer VARCHAR(10),
     genero VARCHAR(50) NOT NULL,
     plataforma VARCHAR(50) NOT NULL,
-    resp INT REFERENCES gamegenius.response(resp_id)
+    resp INT REFERENCES gamegenius.response(jogo_id)
 );
