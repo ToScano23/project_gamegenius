@@ -25,11 +25,20 @@ app.use(bodyParser.json())
 
 // -------------------------------------------
 
-function chatgpt(questionBody){
+function formatarPergunta(perguntaJson){
+    const perguntaBody = perguntaJson.body
+
+    return `
+        Me indique um jogo para ${perguntaBody.n_players} jogadores, s
+        e for multiplayer, no estilo ${tipo_multiplayer}, do genero ${perguntaBody.genero} para ${plataforma}.
+        Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao
+    `
+}
+
+function chatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
     const max_tokens = 50
-    const pergunta = questionBody
 
     const completion = openai.chat.completions.create({
         messages: [ {role: role, content: pergunta} ],
@@ -37,7 +46,7 @@ function chatgpt(questionBody){
         max_tokens: max_tokens
     })
 
-    console.log(questionBody)
+    console.log(pergunta)
     json( {completion: completion.choices[0].message.content} )
 }
 
