@@ -42,7 +42,7 @@ app.get('/jogos', (req, res) => {
 app.post('/salvar-jogo', (req, res, next) => {
     const jogo = req.body
     const sql = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
-    const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.nJogadores, jogo.descricao]
+    const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
     
     connPool.query(sql, pars, (err, results, fields) => {
         if (err){
