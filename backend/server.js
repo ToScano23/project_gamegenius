@@ -6,7 +6,7 @@ const mysql = require('mysql2')
 const porta = 4000
 const bodyParser = require('body-parser')
 
-const  {DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT} = process.env
+const  {OPENAI_API_KEY, DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT} = process.env
 const connPool = mysql.createPool({
     user: DB_USER,
     password: DB_PASSWORD,
@@ -18,7 +18,28 @@ const connPool = mysql.createPool({
     queueLimit: 0
 })
 
+const { OpenAI } = require('openai')
+const openai = new OpenAI(OPENAI_API_KEY)
+
 app.use(bodyParser.json())
+
+// -------------------------------------------
+
+function chatgpt(questionBody){
+    const model = 'gpt-3.5-turbo'
+    const role = 'user'
+    const max_tokens = 50
+    const pergunta = questionBody
+
+    const completion = openai.chat.completions.create({
+        messages: [ {role: role, content: pergunta} ],
+        model: model,
+        max_tokens: max_tokens
+    })
+
+    console.log(prompt)
+    json( {completion: completion.choices[0].message.content} )
+}
 
 // -------------------------------------------
 
