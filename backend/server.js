@@ -37,7 +37,7 @@ function chatgpt(questionBody){
         max_tokens: max_tokens
     })
 
-    console.log(prompt)
+    console.log(questionBody)
     json( {completion: completion.choices[0].message.content} )
 }
 
@@ -99,6 +99,28 @@ app.post('/salvar-jogo', (req, res, next) => {
         } else{
             console.log("Dado inserido com sucesso.")
             res.json(results)
+        }
+    })
+})
+
+app.post('/main', (req, res) => {
+    const log = req.body
+    const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
+    const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
+
+    connPool.query(query, pars, (err, results) => {
+        if (err){
+            console.error("Erro ao inserir log", err)
+            res.status(500).send("Erro ao realizar consulta")
+        } else{
+            console.log("Log inserido com sucesso.")
+            res.json(results)
+
+            // FORMATAR PERGUNTA
+            // VERIFICAR SE JOGO RESPOSTA EXISTE
+            // INSERIR JOGO (SE NECESSÁRIO)
+            // ASSOCIAR JOGO AO LOG
+            // MOSTRAR RESPOSTA
         }
     })
 })
