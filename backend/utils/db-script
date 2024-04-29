@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS gamegenius.jogos(
 
 CREATE TABLE IF NOT EXISTS gamegenius.logs(
     log_id SERIAL PRIMARY KEY,
-    n_players INT NOT NULL,
+    n_players VARCHAR(10) NOT NULL,
     tipo_multiplayer VARCHAR(10),
     genero VARCHAR(50) NOT NULL,
     plataforma VARCHAR(50) NOT NULL,
