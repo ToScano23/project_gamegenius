@@ -26,16 +26,22 @@ app.use(bodyParser.json())
 // -------------------------------------------
 
 function formatarPergunta(perguntaJson){
-    const perguntaBody = perguntaJson.body
 
     return `
-        Me indique um jogo para ${perguntaBody.n_players} jogadores, s
-        e for multiplayer, no estilo ${tipo_multiplayer}, do genero ${perguntaBody.genero} para ${plataforma}.
-        Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao
+        Me indique um jogo para ${perguntaJson.n_players} jogadores, s
+        e for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, do genero ${perguntaJson.genero} para ${perguntaJson.plataforma}.
+        Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao, 
+        sendo que:
+        - O nome é o nome comercial do jogo,
+        - A avaliacao é a nota média do jogo,
+        - O genero é o gênero principal do jogo,
+        - A plataforma é a plataforma principal ao qual o jogo foi desenvolvido,
+        - O n_jogadores é quantos jogadores o jogo suporta,
+        - A descricao é uma breve descrição do jogo
     `
 }
 
-function chatgpt(pergunta){
+function perguntarChatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
     const max_tokens = 50
@@ -47,7 +53,7 @@ function chatgpt(pergunta){
     })
 
     console.log(pergunta)
-    json( {completion: completion.choices[0].message.content} )
+    return json( {completion: completion.choices[0].message.content} )
 }
 
 // -------------------------------------------
@@ -83,7 +89,7 @@ app.get('/logs', (req, res) => {
 app.post('/salvar-log', (req, res) => {
     const log = req.body
     const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-    const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
+    const pars = [log.n_players.toLowerCase(), log.tipo_multiplayer.toLowerCase(), log.genero.toLowerCase(), log.plataforma.toLowerCase()]
 
     connPool.query(query, pars, (err, results) => {
         if (err){
@@ -99,7 +105,7 @@ app.post('/salvar-log', (req, res) => {
 app.post('/salvar-jogo', (req, res, next) => {
     const jogo = req.body
     const query = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
-    const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
+    const pars = [jogo.nome.toLowerCase(), jogo.avaliacao.toLowerCase(), jogo.genero.toLowerCase(), jogo.plataforma.toLowerCase(), jogo.n_jogadores.toLowerCase(), jogo.descricao.toLowerCase()]
     
     connPool.query(query, pars, (err, results) => {
         if (err){
@@ -115,7 +121,7 @@ app.post('/salvar-jogo', (req, res, next) => {
 app.post('/main', (req, res) => {
     const log = req.body
     const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-    const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
+    const pars = [log.n_players.toLowerCase(), log.tipo_multiplayer.toLowerCase(), log.genero.toLowerCase(), log.plataforma.toLowerCase()]
 
     connPool.query(query, pars, (err, results) => {
         if (err){
@@ -126,7 +132,13 @@ app.post('/main', (req, res) => {
             res.json(results)
 
             // FORMATAR PERGUNTA
+            pergunta = formatarPergunta(log)
+
+            // PERGUNTAR AO CHATGPT
+            respostaDoChat = perguntarChatgpt(pergunta)
+
             // VERIFICAR SE JOGO RESPOSTA EXISTE
+
             // INSERIR JOGO (SE NECESSÁRIO)
             // ASSOCIAR JOGO AO LOG
             // MOSTRAR RESPOSTA
