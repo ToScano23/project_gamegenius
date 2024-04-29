@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState} from "react";
 import "./styles.css";
+/*import {
+    submitjogo
+} from "../Submit"; */
 
 const Form = () => {
+ /*
+    const [nbr_players] = useState ("");
+ const [tipo] = useState ("");
+ const [genero] = useState ("");
+ const [plataforma] = useState ("");
+
+
+//Felipe 28/04 - Pendente integração com o backend para processar os dados do form em um prompt para o chatgpt
+function EnviarConsulta() {
+    const jogo = {nbr_players, tipo, genero, plataforma};
+    submitjogo(jogo);
+    console.log(jogo);
+}
+*/
+
     return (
         <div>
             <form name="form1" className="form" data-testid="form">
@@ -35,20 +53,8 @@ const Form = () => {
                 </select>
                 <br />
                 <br />
-                <label className="label" data-testid="subgenreLabel">Sub-gênero:  </label>
-                <select name="subgenero" data-testid = "sub_genre">
-                    <option value="qualquer">Qualquer subgênero</option>
-                    <option value="arcade-ritmo" required>Arcade e Ritmo</option>
-                    <option value="hackslash" required>Hack and Slash</option>
-                    <option value="luta" required>Luta</option>
-                    <option value="shootemup" required>Shoot 'em Up</option>
-                    <option value="firstpersonshooter" required>Tiro em Primeira Pessoa (FPS)</option>
-                    <option value="thirdpersonshooter" required>Tiro em Terceira Pessoa</option>
-                </select>
-                <br />
-                <br />
                 <label className="label" data-testid="platformLabel">Plataforma:  </label>
-                <select name="plaftorma" data-testid = "plataforma">
+                <select name="plataforma" data-testid = "plataforma">
                     <option value="aleatoria">Aleatória</option>
                     <option value="multiplataforma" required>Multiplataforma</option>
                     <option value="pc" required>PC</option>
@@ -63,7 +69,7 @@ const Form = () => {
                 <input type="checkbox" name="terms" required data-testid="termscheckbox"/> Termos e Condições
                 <br />
                 <br />
-                <button type="submit" data-testid="submitbutton" name="enviar" >Enviar</button>
+                <button type="submit" data-testid="submitbutton" name="enviar" /*onClick={EnviarConsulta}*/ >Enviar</button>
             </form>
         </div>
     )
