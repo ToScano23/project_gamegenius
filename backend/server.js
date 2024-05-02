@@ -26,10 +26,10 @@ app.use(bodyParser.json())
 // -------------------------------------------
 
 function formatarPergunta(perguntaJson){
-
     return `
-        Me indique um jogo para ${perguntaJson.n_players} jogadores, s
-        e for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, do genero ${perguntaJson.genero} para ${perguntaJson.plataforma}.
+        Me indique um jogo para ${perguntaJson.n_players} jogadore(s).
+        Se for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, sendo ${perguntaJson.genero} seu gênero principal.
+        Quero jogar em ${perguntaJson.plataforma}.
         Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao, 
         sendo que:
         - O nome é o nome comercial do jogo,
@@ -41,109 +41,129 @@ function formatarPergunta(perguntaJson){
     `
 }
 
-function perguntarChatgpt(pergunta){
+async function perguntarChatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
-    const max_tokens = 50
+    const max_tokens = 150
 
-    const completion = openai.chat.completions.create({
+    const completion = await openai.chat.completions.create({
         messages: [ {role: role, content: pergunta} ],
         model: model,
         max_tokens: max_tokens
     })
 
-    console.log(pergunta)
-    return json( {completion: completion.choices[0].message.content} )
+    return completion.choices[0].message.content
 }
 
 // -------------------------------------------
 
-app.get('/teste', (req, res) => {
-    res.send("Foi")
-})
+// app.get('/teste', (req, res) => {
+//     res.send("Foi")
+// })
 
-app.get('/jogos', (req, res) => {
-    connPool.query("SELECT * FROM gamegenius.jogos", (err, results) => {
-        if (err){
-            console.error("Erro ao realizar consulta", err)
-            res.status(500).send("Erro ao realizar consulta")
-        } else{
-            console.log("Resultados:", results)
-            res.json(results)
-        }
-    })
-})
+// app.get('/jogos', (req, res) => {
+//     connPool.query("SELECT * FROM gamegenius.jogos", (err, results) => {
+//         if (err){
+//             console.error("Erro ao realizar consulta", err)
+//             res.status(500).send("Erro ao realizar consulta")
+//         } else{
+//             console.log("Resultados:", results)
+//             res.json(results)
+//         }
+//     })
+// })
 
-app.get('/logs', (req, res) => {
-    connPool.query("SELECT * FROM gamegenius.logs", (err, results) => {
-        if (err){
-            console.error("Erro ao realizar consulta", err)
-            res.status(500).send("Erro ao realizar consulta")
-        } else{
-            console.log("Resultados:", results)
-            res.json(results)
-        }
-    })
-})
+// app.get('/logs', (req, res) => {
+//     connPool.query("SELECT * FROM gamegenius.logs", (err, results) => {
+//         if (err){
+//             console.error("Erro ao realizar consulta", err)
+//             res.status(500).send("Erro ao realizar consulta")
+//         } else{
+//             console.log("Resultados:", results)
+//             res.json(results)
+//         }
+//     })
+// })
 
-app.post('/salvar-log', (req, res) => {
-    const log = req.body
-    const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-    const pars = [log.n_players.toLowerCase(), log.tipo_multiplayer.toLowerCase(), log.genero.toLowerCase(), log.plataforma.toLowerCase()]
+// app.post('/salvar-log', (req, res) => {
+//     const log = req.body
+//     const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
+//     const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
 
-    connPool.query(query, pars, (err, results) => {
-        if (err){
-            console.error("Erro ao realizar consulta", err)
-            res.status(500).send("Erro ao realizar consulta")
-        } else{
-            console.log("Dado inserido com sucesso.")
-            res.json(results)
-        }
-    })
-})
+//     connPool.query(query, pars, (err, results) => {
+//         if (err){
+//             console.error("Erro ao realizar consulta", err)
+//             res.status(500).send("Erro ao realizar consulta")
+//         } else{
+//             console.log("Dado inserido com sucesso")
+//             res.json(results)
+//         }
+//     })
+// })
 
-app.post('/salvar-jogo', (req, res, next) => {
-    const jogo = req.body
-    const query = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
-    const pars = [jogo.nome.toLowerCase(), jogo.avaliacao.toLowerCase(), jogo.genero.toLowerCase(), jogo.plataforma.toLowerCase(), jogo.n_jogadores.toLowerCase(), jogo.descricao.toLowerCase()]
+// app.post('/salvar-jogo', (req, res, next) => {
+//     const jogo = req.body
+//     const query = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
+//     const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
     
-    connPool.query(query, pars, (err, results) => {
-        if (err){
-            console.error("Erro ao realizar consulta", err)
-            res.status(500).send("Erro ao realizar consulta")
-        } else{
-            console.log("Dado inserido com sucesso.")
-            res.json(results)
-        }
-    })
-})
+//     connPool.query(query, pars, (err, results) => {
+//         if (err){
+//             console.error("Erro ao realizar consulta", err)
+//             res.status(500).send("Erro ao realizar consulta")
+//         } else{
+//             console.log("Dado inserido com sucesso")
+//             res.json(results)
+//         }
+//     })
+// })
 
-app.post('/main', (req, res) => {
+app.post('/new-request', (req, res) => {
+    // INSERIR LOG NO DB
     const log = req.body
-    const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-    const pars = [log.n_players.toLowerCase(), log.tipo_multiplayer.toLowerCase(), log.genero.toLowerCase(), log.plataforma.toLowerCase()]
+    const queryInsertLog = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
+    const parsLog = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
 
-    connPool.query(query, pars, (err, results) => {
+    connPool.query(queryInsertLog, parsLog, (err, results) => {
         if (err){
-            console.error("Erro ao inserir log", err)
-            res.status(500).send("Erro ao realizar consulta")
-        } else{
-            console.log("Log inserido com sucesso.")
+            console.error("Erro ao inserir dados de log", err)
+            res.status(500).send("Erro ao inserir dados de log")
+        } else {
+            console.log("Log inserido com sucesso")
             res.json(results)
-
-            // FORMATAR PERGUNTA
-            pergunta = formatarPergunta(log)
-
-            // PERGUNTAR AO CHATGPT
-            respostaDoChat = perguntarChatgpt(pergunta)
-
-            // VERIFICAR SE JOGO RESPOSTA EXISTE
-
-            // INSERIR JOGO (SE NECESSÁRIO)
-            // ASSOCIAR JOGO AO LOG
-            // MOSTRAR RESPOSTA
         }
     })
+
+    // FORMATAR PERGUNTA
+    pergunta = formatarPergunta(log)
+    console.log(pergunta)
+
+    // PERGUNTAR AO CHATGPT
+    resposta = perguntarChatgpt(pergunta).then(() => console.log(resposta))
+    
+
+    // VERIFICAR SE JOGO RESPOSTA EXISTE
+
+    // INSERIR JOGO (SE NECESSÁRIO)
+    const jogo = resposta.body
+    const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
+    const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
+    
+    connPool.query(queryInsertJogo, parsJogo, (err, results) => {
+        if (err){
+            console.error("Erro ao inserir dados de jogo", err)
+            res.status(500).send("Erro ao inserir dados de jogo")
+        } else{
+            console.log("Dado inserido com sucesso")
+        }
+    })
+
+    // ASSOCIAR JOGO AO LOG
+
+    // MOSTRAR RESPOSTA
+
+    // console.log("Erro na aplicação")
+
+    // process.exit()
 })
 
 // -------------------------------------------
