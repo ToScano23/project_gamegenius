@@ -37,7 +37,7 @@ function formatarPergunta(perguntaJson){
         - O genero é o gênero principal do jogo,
         - A plataforma é a plataforma principal ao qual o jogo foi desenvolvido,
         - O n_jogadores é quantos jogadores o jogo suporta,
-        - A descricao é uma breve descrição do jogo
+        - A descricao é uma breve descrição do jogo, de no máximo 10 palavras
     `
 }
 
@@ -51,7 +51,7 @@ async function perguntarChatgpt(pergunta){
         model: model,
         max_tokens: max_tokens
     })
-
+    console.log("chegou aqui", completion.choices[0].message.content)
     return completion.choices[0].message.content
 }
 
@@ -117,7 +117,7 @@ async function perguntarChatgpt(pergunta){
 //     })
 // })
 
-app.post('/new-request', (req, res) => {
+app.post('/new-request', async (req, res) => {
     // INSERIR LOG NO DB
     const log = req.body
     const queryInsertLog = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
@@ -134,18 +134,20 @@ app.post('/new-request', (req, res) => {
     })
 
     // FORMATAR PERGUNTA
-    pergunta = formatarPergunta(log)
+    const pergunta = formatarPergunta(log)
     console.log(pergunta)
 
     // PERGUNTAR AO CHATGPT
-    resposta = perguntarChatgpt(pergunta).then(() => console.log(resposta))
+    const resposta = await perguntarChatgpt(pergunta)//.then(() => console.log(resposta))
+    console.log("a resposta é:",resposta)
     
 
     // VERIFICAR SE JOGO RESPOSTA EXISTE
 
     // INSERIR JOGO (SE NECESSÁRIO)
-    const jogo = resposta.body
-    const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
+    const jogo = JSON.parse(resposta)
+    console.log(jogo.nome)
+    /* const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
     const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
     
     connPool.query(queryInsertJogo, parsJogo, (err, results) => {
@@ -155,7 +157,7 @@ app.post('/new-request', (req, res) => {
         } else{
             console.log("Dado inserido com sucesso")
         }
-    })
+    }) */
 
     // ASSOCIAR JOGO AO LOG
 
