@@ -5,6 +5,7 @@ const app = express()
 const mysql = require('mysql2')
 const porta = 4000
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const  {OPENAI_API_KEY, DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT} = process.env
 const connPool = mysql.createPool({
