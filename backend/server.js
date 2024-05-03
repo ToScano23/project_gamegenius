@@ -22,6 +22,7 @@ const { OpenAI } = require('openai')
 const openai = new OpenAI(OPENAI_API_KEY)
 
 app.use(bodyParser.json())
+app.use(cors())
 
 // -------------------------------------------
 
@@ -37,14 +38,14 @@ function formatarPergunta(perguntaJson){
         - O genero é o gênero principal do jogo,
         - A plataforma é a plataforma principal ao qual o jogo foi desenvolvido,
         - O n_jogadores é quantos jogadores o jogo suporta,
-        - A descricao é uma breve descrição do jogo, de no máximo 10 palavras
+        - A descricao é uma breve descrição do jogo
     `
 }
 
 async function perguntarChatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
-    const max_tokens = 150
+    const max_tokens = 200
 
     const completion = await openai.chat.completions.create({
         messages: [ {role: role, content: pergunta} ],
@@ -146,8 +147,8 @@ app.post('/new-request', async (req, res) => {
 
     // INSERIR JOGO (SE NECESSÁRIO)
     const jogo = JSON.parse(resposta)
-    console.log(jogo.nome)
-    /* const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
+    console.log(jogo)
+    const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
     const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
     
     connPool.query(queryInsertJogo, parsJogo, (err, results) => {
@@ -157,7 +158,7 @@ app.post('/new-request', async (req, res) => {
         } else{
             console.log("Dado inserido com sucesso")
         }
-    }) */
+    })
 
     // ASSOCIAR JOGO AO LOG
 
