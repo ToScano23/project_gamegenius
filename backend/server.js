@@ -29,7 +29,7 @@ app.use(cors())
 
 function formatarPergunta(perguntaJson){
     return `
-        Me indique um jogo para ${perguntaJson.n_players} jogadore(s).
+        Me indique um jogo para ${perguntaJson.n_players} jogador(es).
         Se for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, sendo ${perguntaJson.genero} seu gênero principal.
         Quero jogar em ${perguntaJson.plataforma}.
         Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao, 
@@ -53,7 +53,7 @@ async function perguntarChatgpt(pergunta){
         model: model,
         max_tokens: max_tokens
     })
-    console.log("chegou aqui", completion.choices[0].message.content)
+    console.log("Resposta do CHATGPT:", completion.choices[0].message.content)
     return completion.choices[0].message.content
 }
 
@@ -137,18 +137,19 @@ app.post('/new-request', async (req, res) => {
 
     // FORMATAR PERGUNTA
     const pergunta = formatarPergunta(log)
-    console.log(pergunta)
+    // console.log(pergunta)
 
     // PERGUNTAR AO CHATGPT
     const resposta = await perguntarChatgpt(pergunta)//.then(() => console.log(resposta))
-    console.log("a resposta é:",resposta)
+    // console.log("a resposta é:",resposta)
     
 
     // VERIFICAR SE JOGO RESPOSTA EXISTE
+    
 
     // INSERIR JOGO (SE NECESSÁRIO)
     const jogo = JSON.parse(resposta)
-    console.log(jogo)
+    // console.log(jogo)
     const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
     const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
     
