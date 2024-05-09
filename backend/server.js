@@ -36,7 +36,7 @@ function formatarPergunta(perguntaJson){
         Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao, 
         sendo que:
         - O nome é o nome comercial do jogo,
-        - A avaliacao é a nota média do jogo,
+        - A avaliacao é a nota média do jogo de 0 a 10,
         - O genero é o gênero principal do jogo,
         - A plataforma é a plataforma principal ao qual o jogo foi desenvolvido,
         - O n_jogadores é quantos jogadores o jogo suporta,
