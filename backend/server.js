@@ -6,6 +6,7 @@ const mysql = require('mysql2')
 const porta = 4000
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const axios = require('axios')
 
 const  {OPENAI_API_KEY, DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT} = process.env
 const connPool = mysql.createPool({
@@ -145,7 +146,7 @@ app.post('/new-request', async (req, res) => {
     
 
     // VERIFICAR SE JOGO RESPOSTA EXISTE
-    
+
 
     // INSERIR JOGO (SE NECESSÁRIO)
     const jogo = JSON.parse(resposta)
@@ -158,17 +159,16 @@ app.post('/new-request', async (req, res) => {
             console.error("Erro ao inserir dados de jogo", err)
             res.status(500).send("Erro ao inserir dados de jogo")
         } else{
-            console.log("Dado inserido com sucesso")
+            console.log("Jogo inserido com sucesso")
         }
     })
 
     // ASSOCIAR JOGO AO LOG
 
-    // MOSTRAR RESPOSTA
+    // ENVIAR RESPOSTA PARA O FRONT
+    const frontUrl = 'http://localhost:3000/return-game'
 
-    // console.log("Erro na aplicação")
-
-    // process.exit()
+    axios.post(frontUrl, jogo)
 })
 
 // -------------------------------------------
