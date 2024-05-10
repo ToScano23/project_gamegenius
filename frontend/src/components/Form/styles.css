@@ -35,3 +35,14 @@ h1.center {
     display: inline-block;
 
 }
+
+.invalid-feedback{
+ color: red;
+ font-size: 14px;
+}
+
+.alert-danger{
+    color: red;
+    font-size: 22px;
+    background-color: yellow;
+}
