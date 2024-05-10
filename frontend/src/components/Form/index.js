@@ -18,20 +18,42 @@ const Form = () => {
     plataforma: "",
   });
 
+//enviar consulta para o backend e aguardar resposta
+  // async function EnviarConsulta(e) {
+  //   e.preventDefault();
+  //   if (validateForm()) {
+  //     const jogo = { n_players, tipo_multiplayer, genero, plataforma };
+  //     console.log(jogo);
+  //     submitjogo(jogo)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       setMensagem("Erro ao consultar, contate o administrador.");
+  //     });
+  //   }
+  // }
 
-  function EnviarConsulta(e) {
+  async function EnviarConsulta(e) {
     e.preventDefault();
     if (validateForm()) {
       const jogo = { n_players, tipo_multiplayer, genero, plataforma };
       console.log(jogo);
-      submitjogo(jogo)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
+      try {
+        const response = await submitjogo(jogo);
+        console.log(response);
+        document.getElementById('resposta').innerText = `
+        O jogo sugerido é ${response.data.nome}.
+        É um jogo de avaliação ${response.data.avaliacao}.
+        Seu gênero é de ${response.data.genero}.
+        É possível jogar na(s) plataforma(s) ${response.data.plataforma} com até ${response.data.n_jogadores} jogador(es).
+        Aqui vai uma breve descrição:
+        ${response.data.descricao}`;
+      } catch (error) {
         console.error(error);
         setMensagem("Erro ao consultar, contate o administrador.");
-      });
+      }
     }
   }
 
@@ -106,7 +128,7 @@ const Form = () => {
           {errors.n_players && (<div className="invalid-feedback"> {errors.n_players}</div>)}
           <br />
           <br />
-          <label className="label" data-testid="gameTypeLabel">Tipo de jogo (se multiplayer):  </label>
+          <label className="errorlabel" data-testid="gameTypeLabel">Tipo de jogo (se multiplayer):  </label>
           <select 
           name="tipo_multiplayer" 
           data-testid="tipo_jogo" 
@@ -161,7 +183,6 @@ const Form = () => {
             <option value="switch" required>Nintendo Switch</option>
           </select>
           {errors.plataforma && (<div className="invalid-feedback"> {errors.plataforma}</div>)}
-          <br />
           <br />
           <button type="submit" data-testid="submitbutton" name="enviar" onClick={EnviarConsulta}>Enviar</button>
         </form>
