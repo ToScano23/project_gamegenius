@@ -39,7 +39,7 @@ function formatarPergunta(perguntaJson){
         - A avaliacao é a nota média do jogo de 0 a 10,
         - O genero é o gênero principal do jogo,
         - A plataforma são todas as plataformas disponíveis para o jogo separadas por vírgula,
-        - O n_jogadores é quantos jogadores o jogo suporta,
+        - O n_jogadores é número máximo de jogadores que o jogo suporta,
         - A descricao é uma breve descrição do jogo
     `
 }
