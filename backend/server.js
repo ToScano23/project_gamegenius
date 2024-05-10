@@ -33,8 +33,8 @@ function formatarPergunta(perguntaJson){
         Me indique um jogo para ${perguntaJson.n_players} jogador(es).
         Se for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, sendo ${perguntaJson.genero} seu gênero principal.
         Quero jogar em ${perguntaJson.plataforma}.
-        Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao, 
-        sendo que:
+        Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao.
+        Sendo que:
         - O nome é o nome comercial do jogo,
         - A avaliacao é a nota média do jogo de 0 a 10,
         - O genero é o gênero principal do jogo,
@@ -54,8 +54,20 @@ async function perguntarChatgpt(pergunta){
         model: model,
         max_tokens: max_tokens
     })
-    console.log("Resposta do CHATGPT:", completion.choices[0].message.content)
+
     return completion.choices[0].message.content
+}
+
+function dbHandler(query, param){
+    connPool.query(query, param, (err, results) => {
+        if (err){
+            console.error("Erro ao realizar query", query, err)
+            res.status(500).send("Erro ao realizar query", query)
+        } else{
+            console.log("Query realizada com sucesso", query)
+            return results
+        }
+    })
 }
 
 // -------------------------------------------
@@ -126,53 +138,39 @@ app.post('/new-request', async (req, res) => {
     const queryInsertLog = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
     const parsLog = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
 
-    connPool.query(queryInsertLog, parsLog, (err, results) => {
-        if (err){
-            console.error("Erro ao inserir dados de log", err)
-            res.status(500).send("Erro ao inserir dados de log")
-        } else {
-            console.log("Log inserido com sucesso")
-            res.json(results)
-        }
-    })
+    dbHandler(queryInsertLog, parsLog)
 
     // FORMATAR PERGUNTA
     const pergunta = formatarPergunta(log)
-    // console.log(pergunta)
 
     // PERGUNTAR AO CHATGPT
-    const resposta = await perguntarChatgpt(pergunta)//.then(() => console.log(resposta))
-    // console.log("a resposta é:",resposta)
-    
+    const resposta = await perguntarChatgpt(pergunta)
+
+    console.log("Resposta do CHATGPT:", resposta)
     const jogo = JSON.parse(resposta)
 
-    // VERIFICAR SE JOGO RESPOSTA EXISTE
-    // const querySelectGame = ""
+    // VERIFICAR SE JOGO RESPOSTA EXISTE NA BASE
+    console.log("Buscando jogo na base")
+    const querySelectJogo = "SELECT jogo_id FROM gamegenius.jogos WHERE nome = ?"
+    const parsSelect = [jogo.nome]
 
+    const selectResult = dbHandler(querySelectJogo, parsSelect)
+    console.log(selectResult)
 
-    // INSERIR JOGO (SE NECESSÁRIO)
-    
-    // console.log(jogo)
+    // SE NAO EXISTIR, ADICIONAR JOGO
     const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
     const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
-    
-    connPool.query(queryInsertJogo, parsJogo, (err, results) => {
-        if (err){
-            console.error("Erro ao inserir dados de jogo", err)
-            res.status(500).send("Erro ao inserir dados de jogo")
-        } else{
-            console.log("Jogo inserido com sucesso")
-        }
-    })
+        
+    dbHandler(queryInsertJogo, parsJogo)
 
+    // SE EXISTIR, NAO ADICIONAR
+    
     // ASSOCIAR JOGO AO LOG
 
     // ENVIAR RESPOSTA PARA O FRONT
-    const frontUrl = 'http://localhost:3000/return-game'
-
-    // axios.post(frontUrl, jogo)
+    res.status(200).send(jogo)
 })
 
 // -------------------------------------------
 
-app.listen(porta, () => console.log("Executando servidor na porta:", porta))
+app.listen(porta, () => console.log("Executando servidor na porta", porta))
