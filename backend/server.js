@@ -38,7 +38,7 @@ function formatarPergunta(perguntaJson){
         - O nome é o nome comercial do jogo,
         - A avaliacao é a nota média do jogo de 0 a 10,
         - O genero é o gênero principal do jogo,
-        - A plataforma é a plataforma principal ao qual o jogo foi desenvolvido,
+        - A plataforma são todas as plataformas disponíveis para o jogo separadas por vírgula,
         - O n_jogadores é quantos jogadores o jogo suporta,
         - A descricao é uma breve descrição do jogo
     `
@@ -47,7 +47,7 @@ function formatarPergunta(perguntaJson){
 async function perguntarChatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
-    const max_tokens = 200
+    const max_tokens = 400
 
     const completion = await openai.chat.completions.create({
         messages: [ {role: role, content: pergunta} ],
@@ -144,12 +144,14 @@ app.post('/new-request', async (req, res) => {
     const resposta = await perguntarChatgpt(pergunta)//.then(() => console.log(resposta))
     // console.log("a resposta é:",resposta)
     
+    const jogo = JSON.parse(resposta)
 
     // VERIFICAR SE JOGO RESPOSTA EXISTE
+    // const querySelectGame = ""
 
 
     // INSERIR JOGO (SE NECESSÁRIO)
-    const jogo = JSON.parse(resposta)
+    
     // console.log(jogo)
     const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
     const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
@@ -168,7 +170,7 @@ app.post('/new-request', async (req, res) => {
     // ENVIAR RESPOSTA PARA O FRONT
     const frontUrl = 'http://localhost:3000/return-game'
 
-    axios.post(frontUrl, jogo)
+    // axios.post(frontUrl, jogo)
 })
 
 // -------------------------------------------
