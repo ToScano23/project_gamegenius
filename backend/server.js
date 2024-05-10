@@ -47,7 +47,7 @@ function formatarPergunta(perguntaJson){
 async function perguntarChatgpt(pergunta){
     const model = 'gpt-3.5-turbo'
     const role = 'user'
-    const max_tokens = 400
+    const max_tokens = 250
 
     const completion = await openai.chat.completions.create({
         messages: [ {role: role, content: pergunta} ],
