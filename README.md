@@ -1,6 +1,6 @@
 # Gamegenius
 ## 🤔 O que é?
-O Gamegenius é uma fonte de dicas de jogos digitais alimentada pelo Chat GPT! Com ele você pode pedir dicas de jogos passando os parâmetros que você deseja e voila! O Gamegenius te dá uma lista de até 5 opções de jogos do jeitinho que você quer.
+O Gamegenius é uma fonte de dicas de jogos digitais alimentada pelo Chat GPT! Com ele você pode pedir dicas de jogos passando os parâmetros que você deseja e voila! O Gamegenius te dá uma sugestão do que jogar.
 
 ## 🛠 Como jogar
 ### Requisitos de infra
@@ -29,3 +29,4 @@ O Gamegenius é o preojeto para composição das notas das discilpinas de Desenv
 [24/03] - entrega02(front): Entrega do front end com adição do subgenero dos jogos - pendente customização detalhada na página - pendente estudo na parte de design de página como inclusão de banners, fundo, etc.</br>
 [31/03] - entrega03(back): cria a aplicação NodeJS com a ferramenta CRA.</br>
 [10/05] - FrontEnd recebe resposta do chatgpt (backend) e é feita a gravação no banco de dados, tanto do jogo quanto da resposta. </br>
+[13/05] - Ajuste da rotina de testes (erro na última versão) - troca da versão do axios para 2.4.0 e refatoração do teste do formulário. </br>
