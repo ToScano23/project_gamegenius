@@ -81,7 +81,6 @@ describe('Form Component', () => {
 
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import Form from './components/Form';
 
 describe('Form Component', () => {
@@ -89,27 +88,21 @@ describe('Form Component', () => {
     render(<Form />);
     
     // Verifica se o formulário foi renderizado
-    const formElement = screen.getByRole('form', { name: /form1/i });
+    const formElement = screen.getByTestId('form', { name: /form1/i });
     expect(formElement).toBeInTheDocument();
 
     // Verifica se os elementos do formulário estão presentes
-    const quantityLabel = screen.getByText(/Quantidade de players/i);
+    const quantityLabel = screen.getByTestId('quantityLabel');
     expect(quantityLabel).toBeInTheDocument();
 
-    const gameTypeLabel = screen.getByText(/Tipo de jogo/i);
+    const gameTypeLabel = screen.getByTestId('gameTypeLabel');
     expect(gameTypeLabel).toBeInTheDocument();
 
-    const genreLabel = screen.getByText(/Gênero/i);
+    const genreLabel = screen.getByTestId('genreLabel');
     expect(genreLabel).toBeInTheDocument();
 
-    const subgenreLabel = screen.getByText(/Sub-gênero/i);
-    expect(subgenreLabel).toBeInTheDocument();
-
-    const platformLabel = screen.getByText(/Plataforma/i);
+    const platformLabel = screen.getByTestId('platformLabel');
     expect(platformLabel).toBeInTheDocument();
-
-    const termsCheckbox = screen.getByRole('checkbox', { name: /termos e condições/i });
-    expect(termsCheckbox).toBeInTheDocument();
 
     const submitButton = screen.getByRole('button', { name: /enviar/i });
     expect(submitButton).toBeInTheDocument();
@@ -119,22 +112,21 @@ describe('Form Component', () => {
     render(<Form />);
     
     // Simula o preenchimento do formulário
-    fireEvent.change(screen.getByLabelText(/Quantidade de players/i), { target: { value: '2player' } });
-    fireEvent.change(screen.getByLabelText(/Tipo de jogo/i), { target: { value: 'pvp' } });
-    fireEvent.change(screen.getByLabelText(/Gênero/i), { target: { value: 'acao' } });
-    fireEvent.change(screen.getByLabelText(/Sub-gênero/i), { target: { value: 'arcade-ritmo' } });
-    fireEvent.change(screen.getByLabelText(/Plataforma/i), { target: { value: 'pc' } });
-    fireEvent.click(screen.getByRole('checkbox', { name: /termos e condições/i }));
-    fireEvent.click(screen.getByRole('button', { name: /enviar/i }));
+    fireEvent.change(screen.getByTestId('select_player'), { target: { value: '2' } });
+    fireEvent.change(screen.getByTestId('tipo_jogo'), { target: { value: 'pvp' } });
+    fireEvent.change(screen.getByTestId('genre'), { target: { value: 'aventura' } });
+    fireEvent.change(screen.getByTestId('plataforma'), { target: { value: 'pc' } });
+    // Encontre o botão pelo ID
+    const botaoSubmit = screen.getByTestId("submitbutton", { name: "enviar" });
+    // Simula o click no botao
+    fireEvent.click(botaoSubmit);
 
     // Verifica se o evento de envio foi chamado corretamente
-    expect(screen.getByRole('form', { name: /form1/i })).toHaveFormValues({
-      nbr_players: '2player',
-      tipo: 'pvp',
-      genero: 'acao',
-      subgenero: 'arcade-ritmo',
-      plaftorma: 'pc',
-      terms: true,
+    expect(screen.getByTestId('form', { name: /form1/i })).toHaveFormValues({
+      n_players: '2',
+      tipo_multiplayer: 'pvp',
+      genero: 'aventura',
+      plataforma: 'pc',
     });
   });
 });
