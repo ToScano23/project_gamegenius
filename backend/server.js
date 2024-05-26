@@ -171,6 +171,11 @@ app.post('/new-request', async (req, res) => {
     res.status(200).send(jogo)
 })
 
+app.post('/eventos', (req, res) => {
+    console.log(req.body)
+    res.status(200).send({msg: 'Ok'})
+})
+
 // -------------------------------------------
 
 app.listen(porta, () => console.log("Executando servidor na porta", porta))
