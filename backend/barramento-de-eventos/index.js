@@ -7,6 +7,10 @@ app.use(express.json())
 app.post('/eventos', (req, res) => {
     const evento = req.body
     // Envia o evento para o microsserviço de backend
+   // axios.post('http://localhost:4000/eventos', evento)
+    // Envia o evento para o microsserviço de pergunta
+    axios.post('http://localhost:3000/eventos', evento)
+    // Envia o evento para o microsserviço de logs
     axios.post('http://localhost:4000/eventos', evento)
     res.status(200).send({msg: 'ok'})
 })
