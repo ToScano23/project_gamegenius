@@ -1,121 +1,79 @@
-function dbHandler(query, param){
+require('dotenv').config();
+
+const express = require('express');
+const app = express();
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_DATABASE, DB_PORT } = process.env;
+const connPool = mysql.createPool({
+    user: DB_USER,
+    password: DB_PASSWORD,
+    host: DB_HOST,
+    database: DB_DATABASE,
+    port: DB_PORT,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
+app.use(bodyParser.json());
+app.use(cors());
+
+function dbHandler(query, param, callback) {
     connPool.query(query, param, (err, results) => {
-        if (err){
-            console.error("Erro ao realizar query", query, err)
-            res.status(500).send("Erro ao realizar query", query)
-        } else{
-            console.log("Query realizada com sucesso", query)
-            return results
+        if (err) {
+            console.error("Erro ao realizar query", query, err);
+            callback(err, null);
+        } else {
+            console.log("Query realizada com sucesso", query);
+            callback(null, results);
         }
-    })
+    });
 }
 
-// -------------------------------------------
+app.post('/salvar-log', (req, res) => {
+    const log = req.body;
+    const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)";
+    const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma];
 
-// app.get('/teste', (req, res) => {
-//     res.send("Foi")
-// })
+    dbHandler(query, pars, (err, results) => {
+        if (err) {
+            res.status(500).send("Erro ao realizar consulta");
+        } else {
+            res.json(results);
+        }
+    });
+});
 
-// app.get('/jogos', (req, res) => {
-//     connPool.query("SELECT * FROM gamegenius.jogos", (err, results) => {
-//         if (err){
-//             console.error("Erro ao realizar consulta", err)
-//             res.status(500).send("Erro ao realizar consulta")
-//         } else{
-//             console.log("Resultados:", results)
-//             res.json(results)
-//         }
-//     })
-// })
+app.post('/salvar-jogo', (req, res) => {
+    const jogo = req.body;
+    const query = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)";
+    const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao];
 
-// app.get('/logs', (req, res) => {
-//     connPool.query("SELECT * FROM gamegenius.logs", (err, results) => {
-//         if (err){
-//             console.error("Erro ao realizar consulta", err)
-//             res.status(500).send("Erro ao realizar consulta")
-//         } else{
-//             console.log("Resultados:", results)
-//             res.json(results)
-//         }
-//     })
-// })
+    dbHandler(query, pars, (err, results) => {
+        if (err) {
+            res.status(500).send("Erro ao realizar consulta");
+        } else {
+            res.json(results);
+        }
+    });
+});
 
-// app.post('/salvar-log', (req, res) => {
-//     const log = req.body
-//     const query = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-//     const pars = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
+app.post('/jogo-existe', (req, res) => {
+    const { nome } = req.body;
+    const query = "SELECT jogo_id FROM gamegenius.jogos WHERE nome = ?";
+    const pars = [nome];
 
-//     connPool.query(query, pars, (err, results) => {
-//         if (err){
-//             console.error("Erro ao realizar consulta", err)
-//             res.status(500).send("Erro ao realizar consulta")
-//         } else{
-//             console.log("Dado inserido com sucesso")
-//             res.json(results)
-//         }
-//     })
-// })
+    dbHandler(query, pars, (err, results) => {
+        if (err) {
+            res.status(500).send("Erro ao realizar consulta");
+        } else {
+            res.json(results);
+        }
+    });
+});
 
-// app.post('/salvar-jogo', (req, res, next) => {
-//     const jogo = req.body
-//     const query = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
-//     const pars = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
-    
-//     connPool.query(query, pars, (err, results) => {
-//         if (err){
-//             console.error("Erro ao realizar consulta", err)
-//             res.status(500).send("Erro ao realizar consulta")
-//         } else{
-//             console.log("Dado inserido com sucesso")
-//             res.json(results)
-//         }
-//     })
-// })
-
-app.post('/new-request', async (req, res) => {
-    // INSERIR LOG NO DB
-    const log = req.body
-    const queryInsertLog = "INSERT INTO gamegenius.logs (n_players, tipo_multiplayer, genero, plataforma) VALUES (?, ?, ?, ?)"
-    const parsLog = [log.n_players, log.tipo_multiplayer, log.genero, log.plataforma]
-
-    dbHandler(queryInsertLog, parsLog)
-
-    // FORMATAR PERGUNTA
-    const pergunta = formatarPergunta(log)
-
-    // PERGUNTAR AO CHATGPT
-    const resposta = await perguntarChatgpt(pergunta)
-
-    console.log("Resposta do CHATGPT:", resposta)
-    const jogo = JSON.parse(resposta)
-
-    // VERIFICAR SE JOGO RESPOSTA EXISTE NA BASE
-    console.log("Buscando jogo na base")
-    const querySelectJogo = "SELECT jogo_id FROM gamegenius.jogos WHERE nome = ?"
-    const parsSelect = [jogo.nome]
-
-    const selectResult = dbHandler(querySelectJogo, parsSelect)
-    console.log(selectResult)
-
-    // SE NAO EXISTIR, ADICIONAR JOGO
-    const queryInsertJogo = "INSERT INTO gamegenius.jogos (nome, avaliacao, genero, plataforma, n_jogadores, descricao) VALUES (?, ?, ?, ?, ?, ?)"
-    const parsJogo = [jogo.nome, jogo.avaliacao, jogo.genero, jogo.plataforma, jogo.n_jogadores, jogo.descricao]
-        
-    dbHandler(queryInsertJogo, parsJogo)
-
-    // SE EXISTIR, NAO ADICIONAR
-    
-    // ASSOCIAR JOGO AO LOG
-
-    // ENVIAR RESPOSTA PARA O FRONT
-    res.status(200).send(jogo)
-})
-
-app.post('/eventos', (req, res) => {    
-    
-    res.status(200).send({msg: 'ok'})
-}),
-
-app.listen(4000, () => {
-    console.log("Logs. Porta 4000")
-})
+const porta = 4002;
+app.listen(porta, () => console.log("Gravação de Logs porta ", porta));
