@@ -18,6 +18,7 @@ function formatarPergunta(perguntaJson) {
         Se for multiplayer, no estilo ${perguntaJson.tipo_multiplayer}, sendo ${perguntaJson.genero} seu gênero principal.
         Quero jogar em ${perguntaJson.plataforma}.
         Me retorne a resposta em formato json com os seguintes parâmetros: nome, avaliacao, genero, plataforma, n_jogadores, descricao.
+        Evite repetir jogos já mencionados anteriormente.
         Sendo que:
         - O nome é o nome comercial do jogo,
         - A avaliacao é a nota média do jogo de 0 a 10,
@@ -45,8 +46,9 @@ async function perguntarChatgpt(pergunta) {
 app.post('/pergunta', async (req, res) => {
     const perguntaJson = req.body;
     const pergunta = formatarPergunta(perguntaJson);
+    console.log(pergunta)
     const resposta = await perguntarChatgpt(pergunta);
-    console.log("Resposta do ChatGPT:", resposta);
+    //console.log("Resposta do ChatGPT:", resposta);
     const respostaJson = JSON.parse(resposta);
     console.log("Resposta do ChatGPT (JSON):", respostaJson);
     res.status(200).send(respostaJson);

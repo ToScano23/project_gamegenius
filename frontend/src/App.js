@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Form from './components/Form';
 import Resposta from './components/Resposta';
+import Relatorios from './components/Relatorios';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Header/>
         <Form/>
         <Resposta/>
+        <Relatorios/>
         <Footer/>
     </div>
   );
