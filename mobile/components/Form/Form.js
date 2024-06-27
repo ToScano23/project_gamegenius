@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Picker, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert, Dimensions } from "react-native";
 import { submitjogo } from "../Submit";
+import { Picker } from '@react-native-picker/picker';
+
+const screenWidth = Dimensions.get("window").width;
 
 const Form = () => {
   const [n_players, set_nplayers] = useState("");
@@ -75,7 +78,7 @@ const Form = () => {
   return (
     <View style={styles.container}>
       {mensagem ? <Text style={styles.alert}>{mensagem}</Text> : null}
-      <Text>Quantidade de players:</Text>
+      <Text style={styles.label}>Quantidade de players:</Text>
       <Picker
         selectedValue={n_players}
         onValueChange={(itemValue) => set_nplayers(itemValue)}
@@ -88,7 +91,7 @@ const Form = () => {
       </Picker>
       {errors.n_players ? <Text style={styles.error}>{errors.n_players}</Text> : null}
 
-      <Text>Tipo de jogo (se multiplayer):</Text>
+      <Text style={styles.label}>Tipo de jogo (se multiplayer):</Text>
       <Picker
         selectedValue={tipo_multiplayer}
         onValueChange={(itemValue) => set_tipomultiplayer(itemValue)}
@@ -101,7 +104,7 @@ const Form = () => {
       </Picker>
       {errors.tipo_multiplayer ? <Text style={styles.error}>{errors.tipo_multiplayer}</Text> : null}
 
-      <Text>Gênero:</Text>
+      <Text style={styles.label}>Gênero:</Text>
       <Picker
         selectedValue={genero}
         onValueChange={(itemValue) => set_genero(itemValue)}
@@ -122,7 +125,7 @@ const Form = () => {
       </Picker>
       {errors.genero ? <Text style={styles.error}>{errors.genero}</Text> : null}
 
-      <Text>Plataforma:</Text>
+      <Text style={styles.label}>Plataforma:</Text>
       <Picker
         selectedValue={plataforma}
         onValueChange={(itemValue) => set_plataforma(itemValue)}
@@ -147,11 +150,19 @@ const Form = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: 110,
+    width: screenWidth,
     backgroundColor: 'rgb(28,28,63)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    color: '#ffffff',
   },
   picker: {
-    height: 50,
+    width: '80%',
+    borderWidth: 1,
+    height: 30,
     width: '100%',
   },
   error: {

@@ -7,12 +7,10 @@ function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => Linking.openURL('http://localhost:3000/')}>
           <Image
-            source={require('../assets/images/banner192_center.png')}
+            source={require('../../assets/banner192_center.png')}
             style={styles.banner}
           />
-        </TouchableOpacity>
       </View>
       <Text style={styles.subtitle}>Defina o que está buscando e encontre algo para jogar:</Text>
     </View>
