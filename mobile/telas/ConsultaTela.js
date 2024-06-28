@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet, Alert, Dimensions, Image } from "react-native";
+import { View, Text, Button, StyleSheet, Alert, Dimensions, Image, ScrollView } from "react-native";
 import { submitjogo } from "../components/Submit";
 import { Picker } from '@react-native-picker/picker';
 
@@ -19,13 +19,21 @@ const ConsultaTela = (props) => {
         genero: "",
         plataforma: "",
     });
+    const [jogo, setJogo] = useState({
+        nome: "",
+        avaliacao: "",
+        genero: "",
+        plataforma: "",
+        n_jogadores: "",
+        descricao: "",
+    });
     async function EnviarConsulta() {
         if (validateForm()) {
             const jogo = { n_players, tipo_multiplayer, genero, plataforma };
-            console.log(jogo);
+            //console.log(jogo);
             try {
                 const response = await submitjogo(jogo);
-                console.log(response);
+                //console.log(response);
                 Alert.alert(
                     "Jogo Sugerido",
                     `
@@ -36,6 +44,7 @@ const ConsultaTela = (props) => {
               Aqui vai uma breve descrição:
               ${response.data.descricao}`
                 );
+                setJogo(response.data);
             } catch (error) {
                 console.error(error);
                 setMensagem("Erro ao consultar, contate o administrador.");
@@ -152,9 +161,17 @@ const ConsultaTela = (props) => {
             {errors.plataforma ? <Text style={styles.error}>{errors.plataforma}</Text> : null}
 
             <Button title="Enviar" onPress={EnviarConsulta} />
-
             <Text style={styles.label}>Resposta do Chat GPT:</Text>
-            <Text style={styles.resposta}></Text>
+            <ScrollView style={styles.respostabox}>
+            {jogo.nome ? <Text style={styles.headerresposta}>Jogo Sugerido: </Text> : null}
+            {jogo.nome ? <Text style={styles.resposta}>
+              O jogo sugerido é {jogo.nome}. {"\n"}
+              É um jogo de avaliação {jogo.avaliacao}.{"\n"}
+              Seu gênero é de {jogo.genero}.{"\n"}
+              É possível jogar na(s) plataforma(s) {jogo.plataforma} com até {jogo.n_jogadores} jogador(es).{"\n"}
+              Aqui vai uma breve descrição: {"\n"}
+              {jogo.descricao}</Text> : null}
+            </ScrollView>
         </View>
     )
 }
@@ -162,7 +179,7 @@ const ConsultaTela = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: 20,
+        paddingVertical: 30,
         width: screenWidth,
         backgroundColor: 'rgb(28,28,63)',
         justifyContent: 'center',
@@ -171,12 +188,21 @@ const styles = StyleSheet.create({
     label: {
         color: '#ffffff',
     },
+    headerresposta: {
+        color: '#ffffff',
+        fontSize: 16,
+    },
+    resposta: {
+        color: '#ffffff',
+        fontSize: 12,
+    },
     picker: {
-        width: '80%',
-        borderWidth: 1,
-        height: 30,
-        width: '100%',
-        color: 'white'
+        borderWidth: 5,
+        height: 1,
+        width: screenWidth - 40,
+        color: 'white',
+        backgroundColor: 'gray',
+        fontSize: 10,
     },
     error: {
         color: 'red',

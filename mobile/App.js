@@ -1,8 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
-import Form from './components/Form/Form';
-import Resposta from './components/Resposta';
-import Header from './components/Header';
-import Cartao from './components/Cartao/Cartao';
+import { StyleSheet, View } from 'react-native';
 import ConsultaTela from './telas/ConsultaTela';
 
 
