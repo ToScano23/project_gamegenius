@@ -94,6 +94,8 @@ const ConsultaTela = (props) => {
                     style={styles.banner}
                 />
             </View>
+            <Button title="Relatorios" onPress={()=>
+                        props.navigation.navigate('RelatoriosTela')} />
             <Text style={styles.subtitle}>Defina o que está buscando e encontre algo para jogar:</Text>
             {mensagem ? <Text style={styles.alert}>{mensagem}</Text> : null}
             <Text style={styles.label}>Quantidade de players:</Text>
@@ -201,7 +203,7 @@ const styles = StyleSheet.create({
         height: 1,
         width: screenWidth - 40,
         color: 'white',
-        backgroundColor: 'gray',
+        backgroundColor: 'darkblue',
         fontSize: 10,
     },
     error: {

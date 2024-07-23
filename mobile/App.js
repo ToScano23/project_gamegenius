@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import ConsultaTela from './telas/ConsultaTela';
+import container from './navegacao/navegador';
 
 
 
@@ -7,7 +7,7 @@ import ConsultaTela from './telas/ConsultaTela';
 export default function App() {
   return (
     <View style={styles.container}>
-      <ConsultaTela/>
+      {container}
     </View>
   );
 }
