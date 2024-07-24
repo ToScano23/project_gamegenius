@@ -54,15 +54,16 @@ function Relatorios() {
   }
 
   const chartConfig = {
-    backgroundGradientFrom: "#1E2923",
-    backgroundGradientTo: "#08130D",
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    backgroundGradientFrom: "#000000",
+    backgroundGradientTo: "#080024",
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 2,
     barPercentage: 0.5,
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
+    <View>
       <Text style={styles.title}>Relatórios</Text>
       <View style={styles.buttonContainer}>
         <Button title="Atualizar" onPress={() => { getDadosDiarios(); getDadosNome(); }} />
@@ -82,22 +83,29 @@ function Relatorios() {
         height={500}
         chartConfig={chartConfig}
         style={styles.chart}
+        horizontal
+        showValuesOnTopOfBars
+        verticalLabelRotation={30}
       />
-    </ScrollView>
+    </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: 20,
-    backgroundColor: '#1c1c3f',
-  },
+    flex: 1,
+    paddingVertical: 30,
+    width: screenWidth,
+    backgroundColor: 'rgb(28,28,63)',
+    justifyContent: 'center',
+    alignItems: 'center',
+},
   title: {
     fontSize: 24,
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   buttonContainer: {
     marginBottom: 20,

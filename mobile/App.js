@@ -6,7 +6,7 @@ import container from './navegacao/navegador';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View>
       {container}
     </View>
   );

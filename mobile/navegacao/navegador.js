@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ConsultaTela from '../telas/ConsultaTela'
 import RelatoriosTela from '../telas/RelatoriosTela'
-import Cores from '../constantes/Cores'
 
 
 const Stack = createNativeStackNavigator()
@@ -12,7 +11,7 @@ const container = (
         <Stack.Navigator 
             initialRouteName="ConsultaTela"
             screenOptions={{
-                headerStyle: {backgroundColor:Cores.primary},
+                headerStyle: '#1c1c3f',
                 headerTintColor: '#1c1c3f'
             }}
         >
